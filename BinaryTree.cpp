@@ -20,10 +20,7 @@ void BinaryTree::insert(int chave) {
     if(raiz != NULL) {
         insert(chave, raiz);
     } else {
-        raiz = new TreeNode;
-        raiz->info = chave;
-        raiz->esq = NULL;
-        raiz->dir = NULL;
+        raiz = createNode(chave);
     }
 }
 
@@ -36,28 +33,7 @@ void BinaryTree::destroy_tree() {
 }
 
 void BinaryTree::printInPreOrder() {
-    /* Versao recursiva - usa um metodo auxiliar */
-    //printInPreOrder(raiz);
-
-    /* Versao iterativa */
-    TreeNode *tmp;
-    std::stack<TreeNode*> pilha;
-    if(raiz != NULL) {
-        pilha.push(raiz);
-        while(!pilha.empty()) {
-            tmp = pilha.top();
-            pilha.pop();
-            printNode(tmp);
-            // Tenta empilhar filho direito
-            if(tmp->dir != NULL) {
-                pilha.push(tmp->dir);
-            }
-            // Tenta empilhar filho esquerda
-            if(tmp->esq != NULL) {
-                pilha.push(tmp->esq);
-            }
-        }
-    }
+    printInPreOrder(raiz);
 }
 
 void BinaryTree::printInOrder() {
@@ -101,24 +77,29 @@ void BinaryTree::destroy_tree(TreeNode *node) {
     }
 }
 
+TreeNode *BinaryTree::createNode(int chave) {
+    TreeNode *tmp = new TreeNode;
+    tmp->info = chave;
+    tmp->esq = NULL;
+    tmp->dir = NULL;
+    return tmp;
+}
+
 void BinaryTree::insert(int chave, TreeNode *node) {
-    if(chave < node->info) {
+    if(chave == node->info) {
+        std::cout << "O valor " << chave << " ja foi inserido na BST!" << std::endl;
+        return;
+    } else if(chave < node->info) {
         if(node->esq != NULL) {
             insert(chave, node->esq);
         } else {
-            node->esq = new TreeNode;
-            node->esq->info = chave;
-            node->esq->esq = NULL;
-            node->esq->dir = NULL;
+            node->esq = createNode(chave);
         }
-    } else if(chave >= node->info) {
+    } else if(chave > node->info) {
         if(node->dir != NULL) {
             insert(chave, node->dir);
         } else {
-            node->dir = new TreeNode;
-            node->dir->info = chave;
-            node->dir->esq = NULL;
-            node->dir->dir = NULL;
+            node->dir = createNode(chave);
         }
     }
 }
@@ -164,10 +145,30 @@ void BinaryTree::printNode(TreeNode *node) {
 
 void BinaryTree::printInPreOrder(TreeNode *node) {
     // Percurso em pre-ordem -> Versao recursiva
-    if(node != NULL) {
+    /*if(node != NULL) {
         std::cout << node->info << std::endl;
         printInPreOrder(node->esq);
         printInPreOrder(node->dir);
+    }*/
+
+    /* Versao iterativa */
+    TreeNode *tmp;
+    std::stack<TreeNode*> pilha;
+    if(raiz != NULL) {
+        pilha.push(raiz);
+        while(!pilha.empty()) {
+            tmp = pilha.top();
+            pilha.pop();
+            printNode(tmp);
+            // Tenta empilhar filho direito
+            if(tmp->dir != NULL) {
+                pilha.push(tmp->dir);
+            }
+            // Tenta empilhar filho esquerda
+            if(tmp->esq != NULL) {
+                pilha.push(tmp->esq);
+            }
+        }
     }
 }
 

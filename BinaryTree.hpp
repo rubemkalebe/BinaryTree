@@ -13,6 +13,7 @@ class BinaryTree {
 
     void destroy_tree(TreeNode *node);
     void insert(int chave, TreeNode *node);
+    TreeNode *createNode(int chave);
     void printNode(TreeNode *node);
 
     /* Metodos de impressao com percursos diferentes */
