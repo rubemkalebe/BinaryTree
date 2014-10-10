@@ -54,5 +54,8 @@ int main() {
      std::cout << "O valor 99 nao esta na arvore" << std::endl;
     }
 
+    std::cout << "Minimo: " << binArv.findMin() << std::endl;
+    std::cout << "Maximo: " << binArv.findMax() << std::endl;
+
     return 0;
 }

@@ -12,6 +12,7 @@ BinaryTree::BinaryTree() {
 }
 
 BinaryTree::~BinaryTree() {
+    // Chama o metodo para liberar toda a memoria alocada para a arvore
     destroy_tree();
 }
 
@@ -71,115 +72,151 @@ void BinaryTree::printInPostOrder() {
     printNode(raiz);
 }
 
+int BinaryTree::findMin() {
+    if(raiz == NULL) {
+        return -1;
+    } else {
+        return findMin(raiz);
+    }
+}
+
+int BinaryTree::findMax() {
+    if(raiz == NULL) {
+        return -1;
+    } else {
+        return findMax(raiz);
+    }
+}
+
 /****************************
  * Metodos privados *
 *****************************/
 
-void BinaryTree::destroy_tree(TreeNode *folha) {
-    if(folha != NULL) {
-        destroy_tree(folha->esq);
-        destroy_tree(folha->dir);
-        delete folha;
+void BinaryTree::destroy_tree(TreeNode *node) {
+    // Metodo recursivo para desalocar memoria
+    if(node != NULL) {
+        destroy_tree(node->esq);
+        destroy_tree(node->dir);
+        delete node;
     }
 }
 
-void BinaryTree::insert(int chave, TreeNode *folha) {
-    if(chave < folha->info) {
-        if(folha->esq != NULL) {
-            insert(chave, folha->esq);
+void BinaryTree::insert(int chave, TreeNode *node) {
+    if(chave < node->info) {
+        if(node->esq != NULL) {
+            insert(chave, node->esq);
         } else {
-            folha->esq = new TreeNode;
-            folha->esq->info = chave;
-            folha->esq->esq = NULL;
-            folha->esq->dir = NULL;
+            node->esq = new TreeNode;
+            node->esq->info = chave;
+            node->esq->esq = NULL;
+            node->esq->dir = NULL;
         }
-    } else if(chave >= folha->info) {
-        if(folha->dir != NULL) {
-            insert(chave, folha->dir);
+    } else if(chave >= node->info) {
+        if(node->dir != NULL) {
+            insert(chave, node->dir);
         } else {
-            folha->dir = new TreeNode;
-            folha->dir->info = chave;
-            folha->dir->esq = NULL;
-            folha->dir->dir = NULL;
+            node->dir = new TreeNode;
+            node->dir->info = chave;
+            node->dir->esq = NULL;
+            node->dir->dir = NULL;
         }
     }
 }
 
-TreeNode *BinaryTree::search(int chave, TreeNode *folha) {
-    if(folha != NULL) {
-        if(chave == folha->info) {
-            return folha;
-        } else if(chave < folha->info) {
-            return search(chave, folha->esq);
+TreeNode *BinaryTree::search(int chave, TreeNode *node) {
+    /*
+     *  Versao recursiva
+     *
+    if(node != NULL) {
+        if(chave == node->info) {
+            return node;
+        } else if(chave < node->info) {
+            return search(chave, node->esq);
         } else {
-            return search(chave, folha->dir);
+            return search(chave, node->dir);
         }
     } else {
         return NULL;
     }
-}
+    */
 
-void BinaryTree::printNode(TreeNode *folha) {
-    if(folha != NULL) {
-        std::cout << folha->info << std::endl;
-    }
-}
-
-void BinaryTree::printInPreOrder(TreeNode *folha) {
-    // Percurso em pre-ordem -> Versao recursiva
-    if(folha != NULL) {
-        std::cout << folha->info << std::endl;
-        printInPreOrder(folha->esq);
-        printInPreOrder(folha->dir);
-    }
-}
-
-void BinaryTree::printInOrder(TreeNode *folha) {
-    // Percurso em ordem -> Versao recursiva
-    if(folha != NULL) {
-        printInOrder(folha->esq);
-        std::cout << folha->info << std::endl;
-        printInOrder(folha->dir);
-    }
-
-    /* Versao iterativa */
-    /*if(folha != NULL) {
-        std::stack<TreeNode*> pilha;
-        pilha.push(folha);
-        TreeNode *ant = NULL;
-        while (!pilha.empty()) {
-          TreeNode *atual = pilha.top();
-          if (!ant || ant->esq == atual || ant->dir == atual) {
-            if (atual->esq)
-              pilha.push(atual->esq);
-            else if (atual->dir)
-              pilha.push(atual->dir);
-          } else if (atual->esq == ant) {
-            if (atual->dir)
-              pilha.push(atual->dir);
-          } else {
-            std::cout << atual->info << std::endl;
-            pilha.pop();
-          }
-          ant = atual;
+    /*
+     * Versao iterativa
+     */
+    TreeNode *tmp = node;
+    while(tmp != NULL) {
+        if(chave == tmp->info) {
+            return tmp;
+        } else if(chave > tmp->info) {
+            tmp = tmp->dir;
+        } else {
+            tmp = tmp->esq;
         }
-    }*/
-
+    }
+    return NULL;
 }
 
-void BinaryTree::printInPostOrder(TreeNode *folha) {
+void BinaryTree::printNode(TreeNode *node) {
+    if(node != NULL) {
+        std::cout << node->info << std::endl;
+    }
+}
+
+void BinaryTree::printInPreOrder(TreeNode *node) {
+    // Percurso em pre-ordem -> Versao recursiva
+    if(node != NULL) {
+        std::cout << node->info << std::endl;
+        printInPreOrder(node->esq);
+        printInPreOrder(node->dir);
+    }
+}
+
+void BinaryTree::printInOrder(TreeNode *node) {
+    // Percurso em ordem -> Versao recursiva
+    if(node != NULL) {
+        printInOrder(node->esq);
+        std::cout << node->info << std::endl;
+        printInOrder(node->dir);
+    }
+
+    /*
+     * Versao iterativa
+    if(node != NULL) {
+        std::stack<TreeNode*> pilha;
+        TreeNode *atual = raiz;
+        bool done = false;
+        while (!done) {
+            if (atual) {
+                pilha.push(atual);
+                atual = atual->esq;
+            } else {
+                if (pilha.empty()) {
+                    done = true;
+                } else {
+                    atual = pilha.top();
+                    pilha.pop();
+                    std::cout << atual->info << std::endl;
+                    atual = atual->dir;
+                }
+            }
+        }
+    }
+    */
+}
+
+void BinaryTree::printInPostOrder(TreeNode *node) {
     // Percurso em pos-ordem -> Versao recursiva
-    /*if(folha != NULL) {
-        printInPostOrder(folha->esq);
-        printInPostOrder(folha->dir);
-        std::cout << folha->info << std::endl;
+    /*if(node != NULL) {
+        printInPostOrder(node->esq);
+        printInPostOrder(node->dir);
+        std::cout << node->info << std::endl;
     }*/
 
     /* Versao iterativa */
-    if(folha != NULL) {
+    if(node != NULL) {
         std::stack<TreeNode*> pilha;
         TreeNode *ant = NULL;   // armazena o no anterior da arvore
-        pilha.push(folha);
+        pilha.push(node);
         while (!pilha.empty()) {
           TreeNode *atual = pilha.top();    // armazena o no atual
           // Quando ant eh pai de atual vamos descer na arvore
@@ -199,4 +236,48 @@ void BinaryTree::printInPostOrder(TreeNode *folha) {
           ant = atual;
         }
     }
+}
+
+int BinaryTree::findMin(TreeNode *node) {
+    /*
+     * Versao recursiva
+     *
+    if(node->esq != NULL) {
+        findMin(node->esq);
+    } else {
+        return node->info;
+    }
+    */
+
+    /*
+     * Versao iterativa
+     *
+     */
+    TreeNode *tmp = node;
+    while(tmp->esq != NULL) {
+        tmp = tmp->esq;
+    }
+    return tmp->info;
+}
+
+int BinaryTree::findMax(TreeNode *node) {
+    /*
+     * Versao recursiva
+     *
+    if(node->dir != NULL) {
+        findMax(node->dir);
+    } else {
+        return node->info;
+    }
+    */
+
+    /*
+     * Versao iterativa
+     *
+     */
+    TreeNode *tmp = node;
+    while(tmp->dir != NULL) {
+        tmp = tmp->dir;
+    }
+    return tmp->info;
 }

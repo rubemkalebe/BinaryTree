@@ -11,15 +11,19 @@ class BinaryTree {
     // Raiz da arvore
     TreeNode *raiz;
 
-    void destroy_tree(TreeNode *folha);
-    void insert(int chave, TreeNode *folha);
-    TreeNode *search(int chave, TreeNode *folha);
-    void printNode(TreeNode *folha);
+    void destroy_tree(TreeNode *node);
+    void insert(int chave, TreeNode *node);
+    void printNode(TreeNode *node);
 
     /* Metodos de impressao com percursos diferentes */
-    void printInPreOrder(TreeNode *folha);
-    void printInOrder(TreeNode *folha);
-    void printInPostOrder(TreeNode *folha);
+    void printInPreOrder(TreeNode *node);
+    void printInOrder(TreeNode *node);
+    void printInPostOrder(TreeNode *node);
+
+    /* Metodos de busca */
+    int findMin(TreeNode *node);
+    int findMax(TreeNode *node);
+    TreeNode *search(int chave, TreeNode *node);
 
 public:
 
@@ -27,13 +31,17 @@ public:
     ~BinaryTree();
 
     void insert(int chave);
-    TreeNode *search(int chave);
     void destroy_tree();
 
     /* Metodos de impressao com percursos diferentes */
     void printInPreOrder();
     void printInOrder();
     void printInPostOrder();
+
+    /* Metodos de busca */
+    int findMin();
+    int findMax();
+    TreeNode *search(int chave);
 
 };
 
