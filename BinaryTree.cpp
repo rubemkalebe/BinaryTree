@@ -86,6 +86,9 @@ TreeNode *BinaryTree::createNode(int chave) {
 }
 
 void BinaryTree::insert(int chave, TreeNode *node) {
+    /*
+     * Versao recursiva
+     *
     if(chave == node->info) {
         std::cout << "O valor " << chave << " ja foi inserido na BST!" << std::endl;
         return;
@@ -100,6 +103,32 @@ void BinaryTree::insert(int chave, TreeNode *node) {
             insert(chave, node->dir);
         } else {
             node->dir = createNode(chave);
+        }
+    }
+    */
+
+    /*
+     * Versao iterativa
+     */
+    TreeNode *tmp = node;
+    while(tmp != NULL) {
+        if(chave == tmp->info) {
+            std::cout << "O valor " << chave << " ja foi inserido na BST!" << std::endl;
+            return;
+        } else if(chave > tmp->info) {
+            if(tmp->dir != NULL) {
+                tmp = tmp->dir;
+            } else {
+                tmp->dir = createNode(chave);
+                break;
+            }
+        } else if(chave < tmp->info){
+            if(tmp->esq != NULL) {
+                tmp = tmp->esq;
+            } else {
+                tmp->esq = createNode(chave);
+                break;
+            }
         }
     }
 }
