@@ -90,6 +90,10 @@ TreeNode *BinaryTree::createNode(int chave) {
     return tmp;
 }
 
+bool BinaryTree::isLeaf(TreeNode *node) {
+    return (node->esq == NULL) && (node->dir == NULL);
+}
+
 void BinaryTree::insert(int chave, TreeNode *node) {
     /*
      * Versao recursiva
