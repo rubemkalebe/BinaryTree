@@ -21,6 +21,7 @@ void BinaryTree::insert(int chave) {
         insert(chave, raiz);
     } else {
         raiz = createNode(chave);
+        raiz->pai = NULL;
     }
 }
 
@@ -120,6 +121,7 @@ void BinaryTree::insert(int chave, TreeNode *node) {
                 tmp = tmp->dir;
             } else {
                 tmp->dir = createNode(chave);
+                tmp->dir->pai = tmp;
                 break;
             }
         } else if(chave < tmp->info){
@@ -127,6 +129,7 @@ void BinaryTree::insert(int chave, TreeNode *node) {
                 tmp = tmp->esq;
             } else {
                 tmp->esq = createNode(chave);
+                tmp->esq->pai = tmp;
                 break;
             }
         }
