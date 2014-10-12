@@ -33,6 +33,7 @@ public:
 
     void insert(int chave);
     void destroy_tree();
+    bool isEmpty();
 
     /* Metodos de impressao com percursos diferentes */
     void printInPreOrder();

@@ -25,6 +25,10 @@ void BinaryTree::insert(int chave) {
     }
 }
 
+bool BinaryTree::isEmpty() {
+    return raiz == NULL;
+}
+
 TreeNode *BinaryTree::search(int chave) {
     return search(chave, raiz);
 }
