@@ -81,6 +81,16 @@ int BinaryTree::sucessor(int chave) {
     return -1;
 }
 
+int BinaryTree::predecessor(int chave) {
+    TreeNode *tmp = search(chave, raiz);
+    if(tmp != NULL) {
+        if((tmp = predecessor(tmp)) != NULL) {
+            return tmp->info;
+        }
+    }
+    return -1;
+}
+
 /****************************
  * Metodos privados *
 *****************************/
@@ -350,6 +360,28 @@ TreeNode *BinaryTree::sucessor(TreeNode *node) {
         }
         if(p == NULL) {
             // nao tem sucessor
+            return NULL;
+        } else {
+            return p;
+        }
+    }
+}
+
+TreeNode *BinaryTree::predecessor(TreeNode *node) {
+    if(node->esq != NULL) {
+        return findMax(node->esq);
+    } else {
+        TreeNode *p;
+        TreeNode *t;
+        p = node->pai;
+        t = node;
+        while((p != NULL) && (t == p->esq)) {
+            // vai subindo na arvore
+            t = p;
+            p = t->pai;
+        }
+        if(p == NULL) {
+            // nao tem predecessor
             return NULL;
         } else {
             return p;

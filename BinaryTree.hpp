@@ -27,6 +27,7 @@ class BinaryTree {
     TreeNode *findMax(TreeNode *node);
     TreeNode *search(int chave, TreeNode *node);
     TreeNode *sucessor(TreeNode *node);
+    TreeNode *predecessor(TreeNode *node);
 
 public:
 
@@ -47,6 +48,7 @@ public:
     int findMax();
     bool search(int chave);
     int sucessor(int chave);
+    int predecessor(int chave);
 
 };
 

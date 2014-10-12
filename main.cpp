@@ -43,12 +43,12 @@ int main() {
     binArv.printInPostOrder();
 
     std::cout << "Procurando nos..." << std::endl;
-    if(binArv.search(31) != NULL) {
+    if(binArv.search(31)) {
         std::cout << "O valor 31 esta na arvore" << std::endl;
     } else {
         std::cout << "O valor 31 nao esta na arvore" << std::endl;
     }
-    if(binArv.search(99) != NULL) {
+    if(binArv.search(99)) {
      std::cout << "O valor 99 esta na arvore" << std::endl;
     } else {
      std::cout << "O valor 99 nao esta na arvore" << std::endl;
