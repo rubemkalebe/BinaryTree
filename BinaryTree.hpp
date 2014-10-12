@@ -23,9 +23,10 @@ class BinaryTree {
     void printInPostOrder(TreeNode *node);
 
     /* Metodos de busca */
-    int findMin(TreeNode *node);
-    int findMax(TreeNode *node);
+    TreeNode *findMin(TreeNode *node);
+    TreeNode *findMax(TreeNode *node);
     TreeNode *search(int chave, TreeNode *node);
+    TreeNode *sucessor(TreeNode *node);
 
 public:
 
@@ -44,7 +45,8 @@ public:
     /* Metodos de busca */
     int findMin();
     int findMax();
-    TreeNode *search(int chave);
+    bool search(int chave);
+    int sucessor(int chave);
 
 };
 

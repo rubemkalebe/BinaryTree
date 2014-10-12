@@ -29,8 +29,8 @@ bool BinaryTree::isEmpty() {
     return raiz == NULL;
 }
 
-TreeNode *BinaryTree::search(int chave) {
-    return search(chave, raiz);
+bool BinaryTree::search(int chave) {
+    return search(chave, raiz) != NULL;
 }
 
 void BinaryTree::destroy_tree() {
@@ -57,7 +57,8 @@ int BinaryTree::findMin() {
     if(raiz == NULL) {
         return -1;
     } else {
-        return findMin(raiz);
+        TreeNode *tmp = findMin(raiz);
+        return tmp->info;
     }
 }
 
@@ -65,8 +66,19 @@ int BinaryTree::findMax() {
     if(raiz == NULL) {
         return -1;
     } else {
-        return findMax(raiz);
+        TreeNode *tmp = findMax(raiz);
+        return tmp->info;
     }
+}
+
+int BinaryTree::sucessor(int chave) {
+    TreeNode *tmp = search(chave, raiz);
+    if(tmp != NULL) {
+        if((tmp = sucessor(tmp)) != NULL) {
+            return tmp->info;
+        }
+    }
+    return -1;
 }
 
 /****************************
@@ -279,7 +291,7 @@ void BinaryTree::printInPostOrder(TreeNode *node) {
     }
 }
 
-int BinaryTree::findMin(TreeNode *node) {
+TreeNode *BinaryTree::findMin(TreeNode *node) {
     /*
      * Versao recursiva
      *
@@ -298,10 +310,10 @@ int BinaryTree::findMin(TreeNode *node) {
     while(tmp->esq != NULL) {
         tmp = tmp->esq;
     }
-    return tmp->info;
+    return tmp;
 }
 
-int BinaryTree::findMax(TreeNode *node) {
+TreeNode *BinaryTree::findMax(TreeNode *node) {
     /*
      * Versao recursiva
      *
@@ -320,5 +332,27 @@ int BinaryTree::findMax(TreeNode *node) {
     while(tmp->dir != NULL) {
         tmp = tmp->dir;
     }
-    return tmp->info;
+    return tmp;
+}
+
+TreeNode *BinaryTree::sucessor(TreeNode *node) {
+    if(node->dir != NULL) {
+        return findMin(node->dir);
+    } else {
+        TreeNode *p;
+        TreeNode *t;
+        p = node->pai;
+        t = node;
+        while((p != NULL) && (t == p->dir)) {
+            // vai subindo na arvore
+            t = p;
+            p = t->pai;
+        }
+        if(p == NULL) {
+            // nao tem sucessor
+            return NULL;
+        } else {
+            return p;
+        }
+    }
 }
