@@ -35,6 +35,7 @@ public:
     ~BinaryTree();
 
     void insert(int chave);
+    void remove(int chave);
     void destroy_tree();
     bool isEmpty();
 

@@ -25,6 +25,35 @@ void BinaryTree::insert(int chave) {
     }
 }
 
+void BinaryTree::remove(int chave) {
+    if(raiz != NULL) {
+        TreeNode *tmp = search(chave, raiz);
+        if(tmp != NULL) {
+            if(isLeaf(tmp)) {
+                if(tmp->pai->esq == tmp) {
+                    tmp->pai->esq = NULL;
+                } else {
+                    tmp->pai->dir = NULL;
+                }
+                delete tmp;
+                return;
+            } else if(((tmp->esq != NULL) && (tmp->dir == NULL)) ||
+                      ((tmp->esq == NULL) && (tmp->dir != NULL))) {
+                if(tmp->pai->esq == tmp) {
+                    tmp->pai->esq = tmp->esq;
+                } else {
+                    tmp->pai->dir = tmp->esq;
+                }
+                return;
+            } else {
+                //Falta ajeitar... eh o unico q nao funcinoa :)
+                return;
+            }
+        }
+    }
+    std::cout << "A arvore esta vazia!!" << std::endl;
+}
+
 bool BinaryTree::isEmpty() {
     return raiz == NULL;
 }
