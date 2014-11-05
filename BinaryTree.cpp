@@ -5,18 +5,21 @@
  * Metodos publicos *
 *****************************/
 
-BinaryTree::BinaryTree() {
+template <class Type>
+BinarySearchTree<Type>::BinarySearchTree() {
     // Como uma arvore eh representada pelo endereço do no raiz
     // uma arvore vazia tem que ser representada pelo valor NULL.
     raiz = NULL;
 }
 
-BinaryTree::~BinaryTree() {
+template <class Type>
+BinarySearchTree<Type>::~BinarySearchTree() {
     // Chama o metodo para liberar toda a memoria alocada para a arvore
     destroy_tree();
 }
 
-void BinaryTree::insert(int chave) {
+template <class Type>
+void BinarySearchTree<Type>::insert(Type chave) {
     if(raiz != NULL) {
         insert(chave, raiz);
     } else {
@@ -25,83 +28,80 @@ void BinaryTree::insert(int chave) {
     }
 }
 
-void BinaryTree::remove(int chave) {
-    if(raiz != NULL) {
-        TreeNode *tmp = search(chave, raiz);
-        if(tmp != NULL) {
-            if(isLeaf(tmp)) {
-                if(tmp->pai->esq == tmp) {
-                    tmp->pai->esq = NULL;
-                } else {
-                    tmp->pai->dir = NULL;
-                }
-                delete tmp;
-                return;
-            } else if(((tmp->esq != NULL) && (tmp->dir == NULL)) ||
-                      ((tmp->esq == NULL) && (tmp->dir != NULL))) {
-                if(tmp->pai->esq == tmp) {
-                    tmp->pai->esq = tmp->esq;
-                } else {
-                    tmp->pai->dir = tmp->esq;
-                }
-                return;
-            } else {
-                //Falta ajeitar... eh o unico q nao funcinoa :)
-                return;
-            }
-        }
+template <class Type>
+void BinarySearchTree<Type>::remove(Type chave) {
+    if(raiz == NULL) {
+        std::cout << "A arvore esta vazia!!" << std::endl;
+    } else {
+        remove(chave, raiz);
     }
-    std::cout << "A arvore esta vazia!!" << std::endl;
 }
 
-bool BinaryTree::isEmpty() {
+template <class Type>
+bool BinarySearchTree<Type>::isEmpty() {
     return raiz == NULL;
 }
 
-bool BinaryTree::search(int chave) {
+template <class Type>
+bool BinarySearchTree<Type>::search(Type chave) {
     return search(chave, raiz) != NULL;
 }
 
-void BinaryTree::destroy_tree() {
+template <class Type>
+void BinarySearchTree<Type>::destroy_tree() {
     destroy_tree(raiz);
 }
 
-void BinaryTree::printInPreOrder() {
+template <class Type>
+void BinarySearchTree<Type>::printInPreOrder() {
     printInPreOrder(raiz);
 }
 
-void BinaryTree::printInOrder() {
+template <class Type>
+void BinarySearchTree<Type>::printInOrder() {
     printInOrder(raiz->esq);
     printNode(raiz);
     printInOrder(raiz->dir);
 }
 
-void BinaryTree::printInPostOrder() {
+template <class Type>
+void BinarySearchTree<Type>::printInPostOrder() {
     printInPostOrder(raiz->esq);
     printInPostOrder(raiz->dir);
     printNode(raiz);
 }
 
-int BinaryTree::findMin() {
+template <class Type>
+std::string BinarySearchTree<Type>::toString() {
+    if(raiz != NULL) {
+        std::string str = percorreEmNivel(raiz);
+        return str;
+    }
+}
+
+template <class Type>
+Type BinarySearchTree<Type>::findMin() {
     if(raiz == NULL) {
         return -1;
     } else {
-        TreeNode *tmp = findMin(raiz);
+        TreeNode<Type> *tmp = findMin(raiz);
         return tmp->info;
     }
 }
 
-int BinaryTree::findMax() {
+template <class Type>
+Type BinarySearchTree<Type>::findMax() {
     if(raiz == NULL) {
         return -1;
     } else {
-        TreeNode *tmp = findMax(raiz);
+        TreeNode<Type> *tmp = findMax(raiz);
         return tmp->info;
     }
 }
 
-int BinaryTree::sucessor(int chave) {
-    TreeNode *tmp = search(chave, raiz);
+template <class Type>
+Type BinarySearchTree<Type>::sucessor(Type chave) {
+    TreeNode<Type> *tmp = search(chave, raiz);
     if(tmp != NULL) {
         if((tmp = sucessor(tmp)) != NULL) {
             return tmp->info;
@@ -110,8 +110,9 @@ int BinaryTree::sucessor(int chave) {
     return -1;
 }
 
-int BinaryTree::predecessor(int chave) {
-    TreeNode *tmp = search(chave, raiz);
+template <class Type>
+Type BinarySearchTree<Type>::predecessor(Type chave) {
+    TreeNode<Type> *tmp = search(chave, raiz);
     if(tmp != NULL) {
         if((tmp = predecessor(tmp)) != NULL) {
             return tmp->info;
@@ -124,7 +125,8 @@ int BinaryTree::predecessor(int chave) {
  * Metodos privados *
 *****************************/
 
-void BinaryTree::destroy_tree(TreeNode *node) {
+template <class Type>
+void BinarySearchTree<Type>::destroy_tree(TreeNode<Type> *node) {
     // Metodo recursivo para desalocar memoria
     if(node != NULL) {
         destroy_tree(node->esq);
@@ -133,44 +135,24 @@ void BinaryTree::destroy_tree(TreeNode *node) {
     }
 }
 
-TreeNode *BinaryTree::createNode(int chave) {
-    TreeNode *tmp = new TreeNode;
+template <class Type>
+TreeNode<Type> *BinarySearchTree<Type>::createNode(Type chave) {
+    TreeNode<Type> *tmp = new TreeNode<Type>;
     tmp->info = chave;
     tmp->esq = NULL;
     tmp->dir = NULL;
     return tmp;
 }
 
-bool BinaryTree::isLeaf(TreeNode *node) {
+template <class Type>
+bool BinarySearchTree<Type>::isLeaf(TreeNode<Type> *node) {
     return (node->esq == NULL) && (node->dir == NULL);
 }
 
-void BinaryTree::insert(int chave, TreeNode *node) {
-    /*
-     * Versao recursiva
-     *
-    if(chave == node->info) {
-        std::cout << "O valor " << chave << " ja foi inserido na BST!" << std::endl;
-        return;
-    } else if(chave < node->info) {
-        if(node->esq != NULL) {
-            insert(chave, node->esq);
-        } else {
-            node->esq = createNode(chave);
-        }
-    } else if(chave > node->info) {
-        if(node->dir != NULL) {
-            insert(chave, node->dir);
-        } else {
-            node->dir = createNode(chave);
-        }
-    }
-    */
-
-    /*
-     * Versao iterativa
-     */
-    TreeNode *tmp = node;
+template <class Type>
+void BinarySearchTree<Type>::insert(Type chave, TreeNode<Type> *node) {
+    // Versao iterativa
+    TreeNode<Type> *tmp = node;
     while(tmp != NULL) {
         if(chave == tmp->info) {
             std::cout << "O valor " << chave << " ja foi inserido na BST!" << std::endl;
@@ -195,27 +177,10 @@ void BinaryTree::insert(int chave, TreeNode *node) {
     }
 }
 
-TreeNode *BinaryTree::search(int chave, TreeNode *node) {
-    /*
-     *  Versao recursiva
-     *
-    if(node != NULL) {
-        if(chave == node->info) {
-            return node;
-        } else if(chave < node->info) {
-            return search(chave, node->esq);
-        } else {
-            return search(chave, node->dir);
-        }
-    } else {
-        return NULL;
-    }
-    */
-
-    /*
-     * Versao iterativa
-     */
-    TreeNode *tmp = node;
+template <class Type>
+TreeNode<Type> *BinarySearchTree<Type>::search(Type chave, TreeNode<Type> *node) {
+    // Versao iterativa
+    TreeNode<Type> *tmp = node;
     while(tmp != NULL) {
         if(chave == tmp->info) {
             return tmp;
@@ -228,23 +193,48 @@ TreeNode *BinaryTree::search(int chave, TreeNode *node) {
     return NULL;
 }
 
-void BinaryTree::printNode(TreeNode *node) {
+template <class Type>
+void BinarySearchTree<Type>::remove(Type chave, TreeNode<Type> *node) {
+    TreeNode<Type> *tmp = search(chave, raiz);
+    if(tmp != NULL) {
+        if(isLeaf(tmp)) {
+            if(tmp->pai->esq == tmp) {
+                tmp->pai->esq = NULL;
+            } else {
+                tmp->pai->dir = NULL;
+            }
+            delete tmp;
+            return;
+        } else if(((tmp->esq != NULL) && (tmp->dir == NULL)) ||
+                  ((tmp->esq == NULL) && (tmp->dir != NULL))) {
+            if(tmp->pai->esq == tmp) {
+                tmp->pai->esq = tmp->esq;
+            } else {
+                tmp->pai->dir = tmp->esq;
+            }
+            return;
+        } else {
+            TreeNode<Type> *suc = sucessor(tmp);
+            Type infoTemp = suc->info;
+            remove(infoTemp);
+            tmp->info = infoTemp;
+            return;
+        }
+    }
+}
+
+template <class Type>
+void BinarySearchTree<Type>::printNode(TreeNode<Type> *node) {
     if(node != NULL) {
         std::cout << node->info << std::endl;
     }
 }
 
-void BinaryTree::printInPreOrder(TreeNode *node) {
-    // Percurso em pre-ordem -> Versao recursiva
-    /*if(node != NULL) {
-        std::cout << node->info << std::endl;
-        printInPreOrder(node->esq);
-        printInPreOrder(node->dir);
-    }*/
-
-    /* Versao iterativa */
-    TreeNode *tmp;
-    std::stack<TreeNode*> pilha;
+template <class Type>
+void BinarySearchTree<Type>::printInPreOrder(TreeNode<Type> *node) {
+    // Versao iterativa
+    TreeNode<Type> *tmp;
+    std::stack<TreeNode<Type>*> pilha;
     if(raiz != NULL) {
         pilha.push(raiz);
         while(!pilha.empty()) {
@@ -263,54 +253,25 @@ void BinaryTree::printInPreOrder(TreeNode *node) {
     }
 }
 
-void BinaryTree::printInOrder(TreeNode *node) {
+template <class Type>
+void BinarySearchTree<Type>::printInOrder(TreeNode<Type> *node) {
     // Percurso em ordem -> Versao recursiva
     if(node != NULL) {
         printInOrder(node->esq);
         std::cout << node->info << std::endl;
         printInOrder(node->dir);
     }
-
-    /*
-     * Versao iterativa
-    if(node != NULL) {
-        std::stack<TreeNode*> pilha;
-        TreeNode *atual = raiz;
-        bool done = false;
-        while (!done) {
-            if (atual) {
-                pilha.push(atual);
-                atual = atual->esq;
-            } else {
-                if (pilha.empty()) {
-                    done = true;
-                } else {
-                    atual = pilha.top();
-                    pilha.pop();
-                    std::cout << atual->info << std::endl;
-                    atual = atual->dir;
-                }
-            }
-        }
-    }
-    */
 }
 
-void BinaryTree::printInPostOrder(TreeNode *node) {
-    // Percurso em pos-ordem -> Versao recursiva
-    /*if(node != NULL) {
-        printInPostOrder(node->esq);
-        printInPostOrder(node->dir);
-        std::cout << node->info << std::endl;
-    }*/
-
-    /* Versao iterativa */
+template <class Type>
+void BinarySearchTree<Type>::printInPostOrder(TreeNode<Type> *node) {
+    // Versao iterativa
     if(node != NULL) {
-        std::stack<TreeNode*> pilha;
-        TreeNode *ant = NULL;   // armazena o no anterior da arvore
+        std::stack<TreeNode<Type>*> pilha;
+        TreeNode<Type> *ant = NULL;   // armazena o no anterior da arvore
         pilha.push(node);
         while (!pilha.empty()) {
-          TreeNode *atual = pilha.top();    // armazena o no atual
+          TreeNode<Type> *atual = pilha.top();    // armazena o no atual
           // Quando ant eh pai de atual vamos descer na arvore
           if (!ant || ant->esq == atual || ant->dir == atual) {
             if (atual->esq)
@@ -330,56 +291,58 @@ void BinaryTree::printInPostOrder(TreeNode *node) {
     }
 }
 
-TreeNode *BinaryTree::findMin(TreeNode *node) {
-    /*
-     * Versao recursiva
-     *
-    if(node->esq != NULL) {
-        findMin(node->esq);
-    } else {
-        return node->info;
-    }
-    */
+template <class Type>
+std::string BinarySearchTree<Type>::percorreEmNivel(TreeNode<Type> *node) {
+    // Versao iterativa
+    TreeNode<Type> *tmp;
+    std::string str = "";
+    std::string s;
+    std::queue<TreeNode<Type>*> fila;
+    fila.push(node);
+    while(!fila.empty()) {
+        tmp = fila.front();
+        fila.pop();
+        std::stringstream out;
+        out << tmp->info;
+        s = out.str();
+        str += s;
+        str += ' ';
+        if(tmp->esq != NULL)
+            fila.push(tmp->esq);
+        if(tmp->dir != NULL)
+            fila.push(tmp->dir);
 
-    /*
-     * Versao iterativa
-     *
-     */
-    TreeNode *tmp = node;
+    }
+    return str;
+}
+
+template <class Type>
+TreeNode<Type> *BinarySearchTree<Type>::findMin(TreeNode<Type> *node) {
+    // Versao iterativa
+    TreeNode<Type> *tmp = node;
     while(tmp->esq != NULL) {
         tmp = tmp->esq;
     }
     return tmp;
 }
 
-TreeNode *BinaryTree::findMax(TreeNode *node) {
-    /*
-     * Versao recursiva
-     *
-    if(node->dir != NULL) {
-        findMax(node->dir);
-    } else {
-        return node->info;
-    }
-    */
-
-    /*
-     * Versao iterativa
-     *
-     */
-    TreeNode *tmp = node;
+template <class Type>
+TreeNode<Type> *BinarySearchTree<Type>::findMax(TreeNode<Type> *node) {
+    // Versao iterativa
+    TreeNode<Type> *tmp = node;
     while(tmp->dir != NULL) {
         tmp = tmp->dir;
     }
     return tmp;
 }
 
-TreeNode *BinaryTree::sucessor(TreeNode *node) {
+template <class Type>
+TreeNode<Type> *BinarySearchTree<Type>::sucessor(TreeNode<Type> *node) {
     if(node->dir != NULL) {
         return findMin(node->dir);
     } else {
-        TreeNode *p;
-        TreeNode *t;
+        TreeNode<Type> *p;
+        TreeNode<Type> *t;
         p = node->pai;
         t = node;
         while((p != NULL) && (t == p->dir)) {
@@ -396,12 +359,13 @@ TreeNode *BinaryTree::sucessor(TreeNode *node) {
     }
 }
 
-TreeNode *BinaryTree::predecessor(TreeNode *node) {
+template <class Type>
+TreeNode<Type> *BinarySearchTree<Type>::predecessor(TreeNode<Type> *node) {
     if(node->esq != NULL) {
         return findMax(node->esq);
     } else {
-        TreeNode *p;
-        TreeNode *t;
+        TreeNode<Type> *p;
+        TreeNode<Type> *t;
         p = node->pai;
         t = node;
         while((p != NULL) && (t == p->esq)) {

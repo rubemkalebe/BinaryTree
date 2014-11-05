@@ -1,19 +1,21 @@
 #ifndef TREENODE_HPP
 #define TREENODE_HPP
 
-struct Node {
+template <class Type>
+class TreeNode {
 
+public:
     // Informacao a ser armazenada (depois sera um campo para a chave e outro para o dado)
-    int info;
+    Type info;
 
     // Apontador para a subarvore a esquerda
-    Node *esq;
+    TreeNode *esq;
 
     // Apontador para a subarvore a direita
-    Node *dir;
+    TreeNode *dir;
 
     // Apontador para o pai do no
-    Node *pai;
+    TreeNode *pai;
 
 };
 

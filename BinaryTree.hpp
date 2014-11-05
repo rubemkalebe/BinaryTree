@@ -3,39 +3,42 @@
 
 #include "TreeNode.hpp"
 #include <stack>
+#include <queue>
+#include <sstream>
 
-typedef struct Node TreeNode;
-
-class BinaryTree {
+template <class Type>
+class BinarySearchTree {
 
     // Raiz da arvore
-    TreeNode *raiz;
+    TreeNode<Type> *raiz;
 
-    void destroy_tree(TreeNode *node);
-    void insert(int chave, TreeNode *node);
-    TreeNode *createNode(int chave);
-    void printNode(TreeNode *node);
-    bool isLeaf(TreeNode *node);
+    void destroy_tree(TreeNode<Type> *node);
+    void insert(Type chave, TreeNode<Type> *node);
+    TreeNode<Type> *createNode(Type chave);
+    void printNode(TreeNode<Type> *node);
+    bool isLeaf(TreeNode<Type> *node);
+    void remove(Type chave, TreeNode<Type> *node);
 
     /* Metodos de impressao com percursos diferentes */
-    void printInPreOrder(TreeNode *node);
-    void printInOrder(TreeNode *node);
-    void printInPostOrder(TreeNode *node);
+    void printInPreOrder(TreeNode<Type> *node);
+    void printInOrder(TreeNode<Type> *node);
+    void printInPostOrder(TreeNode<Type> *node);
+    std::string percorreEmNivel(TreeNode<Type> *node);
 
     /* Metodos de busca */
-    TreeNode *findMin(TreeNode *node);
-    TreeNode *findMax(TreeNode *node);
-    TreeNode *search(int chave, TreeNode *node);
-    TreeNode *sucessor(TreeNode *node);
-    TreeNode *predecessor(TreeNode *node);
+    TreeNode<Type> *findMin(TreeNode<Type> *node);
+    TreeNode<Type> *findMax(TreeNode<Type> *node);
+    TreeNode<Type> *search(Type chave, TreeNode<Type> *node);
+    TreeNode<Type> *sucessor(TreeNode<Type> *node);
+    TreeNode<Type> *predecessor(TreeNode<Type> *node);
 
 public:
 
-    BinaryTree();
-    ~BinaryTree();
+    BinarySearchTree();
+    ~BinarySearchTree();
 
-    void insert(int chave);
-    void remove(int chave);
+    void insert(Type chave);
+    void remove(Type chave);
     void destroy_tree();
     bool isEmpty();
 
@@ -43,13 +46,14 @@ public:
     void printInPreOrder();
     void printInOrder();
     void printInPostOrder();
+    std::string toString();
 
     /* Metodos de busca */
-    int findMin();
-    int findMax();
-    bool search(int chave);
-    int sucessor(int chave);
-    int predecessor(int chave);
+    Type findMin();
+    Type findMax();
+    bool search(Type chave);
+    Type sucessor(Type chave);
+    Type predecessor(Type chave);
 
 };
 

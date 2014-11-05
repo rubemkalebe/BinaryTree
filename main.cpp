@@ -1,5 +1,6 @@
 #include <iostream>
 #include "BinaryTree.hpp"
+#include "BinaryTree.cpp"
 
 /*
     Arvore inserida
@@ -14,48 +15,48 @@
 
 int main() {
 
-    BinaryTree binArv;
+    BinarySearchTree<int> bst;
 
-/*  binArv.insert(13);
-    binArv.insert(10);
-    binArv.insert(2);
-    binArv.insert(12);
-    binArv.insert(25);
-    binArv.insert(20);
-    binArv.insert(31);
-    binArv.insert(29);*/
-    binArv.insert(13);
-    binArv.insert(10);
-    binArv.insert(25);
-    binArv.insert(2);
-    binArv.insert(12);
-    binArv.insert(20);
-    binArv.insert(31);
-    binArv.insert(29);
-
+    bst.insert(13);
+    bst.insert(10);
+    bst.insert(25);
+    bst.insert(2);
+    bst.insert(12);
+    bst.insert(20);
+    bst.insert(31);
+    bst.insert(29);
+/*
     std::cout << "Impressao da arvore em pre-ordem:" << std::endl;
-    binArv.printInPreOrder();
+    bst.printInPreOrder();
 
     std::cout << "Impressao da arvore em ordem:" << std::endl;
-    binArv.printInOrder();
+    bst.printInOrder();
+
+    bst.remove(25);
+
+    std::cout << "Impressao da arvore em ordem:" << std::endl;
+    bst.printInOrder();
 
     std::cout << "Impressao da arvore em pos-ordem:" << std::endl;
-    binArv.printInPostOrder();
+    bst.printInPostOrder();
 
     std::cout << "Procurando nos..." << std::endl;
-    if(binArv.search(31)) {
+    if(bst.search(31)) {
         std::cout << "O valor 31 esta na arvore" << std::endl;
     } else {
         std::cout << "O valor 31 nao esta na arvore" << std::endl;
     }
-    if(binArv.search(99)) {
+    if(bst.search(99)) {
      std::cout << "O valor 99 esta na arvore" << std::endl;
     } else {
      std::cout << "O valor 99 nao esta na arvore" << std::endl;
     }
 
-    std::cout << "Minimo: " << binArv.findMin() << std::endl;
-    std::cout << "Maximo: " << binArv.findMax() << std::endl;
+    std::cout << "Minimo: " << bst.findMin() << std::endl;
+    std::cout << "Maximo: " << bst.findMax() << std::endl;
+*/
+
+    std::cout << bst.toString() << std::endl;
 
     return 0;
 }
